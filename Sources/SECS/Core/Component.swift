@@ -1,4 +1,4 @@
-protocol Component {}
+public protocol Component {}
 
 extension Component {
     static var identifier: String {

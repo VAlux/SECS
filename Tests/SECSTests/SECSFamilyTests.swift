@@ -1,5 +1,5 @@
 import XCTest
-@testable import SECS
+import SECS
 
 final class SECSFamilyTests: XCTestCase {
     private let hullComponent = HullComponent()
@@ -7,49 +7,37 @@ final class SECSFamilyTests: XCTestCase {
     private let playerComponent = PlayerComponent()
     
     func testCompliesAll() throws {
-        let family = Family()
-        family.all(components: hullComponent, engineComponent, playerComponent)
-        
+        let family =
+            Family(matchers: .allOf(components: [HullComponent.self, EngineComponent.self, PlayerComponent.self]))
+
         let shipEntityComplete = createCompleteShipEntity()
         let resultFullyComplies = family.complies(to: shipEntityComplete)
         
         XCTAssertTrue(resultFullyComplies)
         
-        let shipEntityIncomplete = Entity()
-        shipEntityIncomplete.add(hullComponent)
-        shipEntityIncomplete.add(playerComponent)
-        
+        let shipEntityIncomplete = Entity(components: hullComponent, playerComponent)
         let resultNotComply = family.complies(to: shipEntityIncomplete)
         
         XCTAssertFalse(resultNotComply)
     }
     
     func testCompliesOne() throws {
-        let family = Family()
-        family.one(component: hullComponent)
-        
+        let family = Family(matchers: .eitherOf(components: [HullComponent.self]))
         let shipEntityComplete = createCompleteShipEntity()
         let resultComplies = family.complies(to: shipEntityComplete)
         
         XCTAssertTrue(resultComplies)
         
-        let shipEntityWithoutHull = Entity()
-        shipEntityWithoutHull.add(engineComponent)
-        shipEntityWithoutHull.add(playerComponent)
-        
+        let shipEntityWithoutHull = Entity(components: engineComponent, playerComponent)
         let resultNotComply = family.complies(to: shipEntityWithoutHull)
         
         XCTAssertFalse(resultNotComply)
     }
     
     func testCompliesExclude() throws {
-        let family = Family()
-        family.exclude(component: engineComponent)
-        
-        let shipEntityWithoutEngine = Entity()
-        shipEntityWithoutEngine.add(hullComponent)
-        shipEntityWithoutEngine.add(playerComponent)
-        
+        let family = Family(matchers: .noneOf(components: [EngineComponent.self]))
+
+        let shipEntityWithoutEngine = Entity(components: hullComponent, playerComponent)
         let resultComplies = family.complies(to: shipEntityWithoutEngine)
         
         XCTAssertTrue(resultComplies)
@@ -61,15 +49,9 @@ final class SECSFamilyTests: XCTestCase {
     }
     
     func testFamiliesEqual() throws {
-        let familyOne = Family()
-        familyOne.all(components: hullComponent, engineComponent)
-        
-        let familyTwo = Family()
-        familyTwo.all(components: hullComponent, engineComponent)
-        
-        let familyThree = Family()
-        familyTwo.all(components: engineComponent)
-        
+        let familyOne = Family(matchers: .allOf(components: [HullComponent.self, EngineComponent.self]))
+        let familyTwo = Family(matchers: .allOf(components: [HullComponent.self, EngineComponent.self]))
+        let familyThree = Family(matchers: .allOf(components: [EngineComponent.self]))
         let emptyFamily = Family()
         
         XCTAssertTrue(familyOne == familyTwo)

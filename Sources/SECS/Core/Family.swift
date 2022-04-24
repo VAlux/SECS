@@ -1,28 +1,35 @@
-class Family: Hashable {
+public final class Family: Hashable {
     private var all = Set<String>()
-    private var one = Set<String>()
+    private var either = Set<String>()
     private var exclude = Set<String>()
-    
-    func all(components: Component...) {
-        components.map { type(of: $0).identifier }.forEach { all.insert($0) }
+
+    public enum ComponentMatcher {
+        case allOf(components: [Component.Type])
+        case eitherOf(components: [Component.Type])
+        case noneOf(components: [Component.Type])
+    }
+
+    public init(matchers: ComponentMatcher...) {
+        for matcher in matchers {
+            switch(matcher) {
+            case .allOf(let components):
+                all.formUnion(components.map { $0.identifier })
+            case .eitherOf(let components):
+                either.formUnion(components.map { $0.identifier })
+            case .noneOf(let components):
+                exclude.formUnion(components.map { $0.identifier })
+            }
+        }
     }
     
-    func one(component: Component) {
-        one.insert(type(of: component).identifier)
-    }
-    
-    func exclude(component: Component) {
-        exclude.insert(type(of: component).identifier)
-    }
-    
-    func complies(to entity: Entity) -> Bool {
+    public func complies(to entity: Entity) -> Bool {
         let entityComponents = entity.componentTypeIds
         
         if !all.isSubset(of: entityComponents) {
             return false
         }
         
-        if !one.isEmpty && entityComponents.intersection(one).isEmpty {
+        if !either.isEmpty && entityComponents.intersection(either).isEmpty {
             return false
         }
         
@@ -33,13 +40,13 @@ class Family: Hashable {
         return true
     }
     
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(all.hashValue)
-        hasher.combine(one.hashValue)
+        hasher.combine(either.hashValue)
         hasher.combine(exclude.hashValue)
     }
     
-    static func == (lhs: Family, rhs: Family) -> Bool {
+    public static func == (lhs: Family, rhs: Family) -> Bool {
         lhs.hashValue == rhs.hashValue
     }
 }
