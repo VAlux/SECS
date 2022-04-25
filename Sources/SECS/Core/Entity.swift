@@ -26,6 +26,11 @@ public class Entity {
         components.removeValue(forKey: T.identifier) as? T
     }
 
+    @discardableResult
+    public func remove<T: Component>(for type: T.Type) -> T? {
+        components.removeValue(forKey: T.identifier) as? T
+    }
+
     private func add(_ component: Component, with identifier: String) {
         components[identifier] = component
         componentTypeIds.insert(identifier)

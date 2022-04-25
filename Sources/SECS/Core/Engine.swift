@@ -12,7 +12,7 @@ public class Engine {
 
     private var entities: [Entity] = []
     private var systems: [AnySystem] = []
-    private let processingQueue = DispatchQueue(label: "Entity processing queue")
+    private let processingQueue = DispatchQueue(label: "Engine processing queue")
 
     public init() { }
 

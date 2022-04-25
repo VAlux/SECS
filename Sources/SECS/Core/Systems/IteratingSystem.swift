@@ -1,5 +1,6 @@
 //
 //  IteratingSystem.swift
+//
 //  Created by Alexander Voievodin on 19.04.2022.
 //
 
@@ -18,7 +19,7 @@ open class IteratingSystem : EntityProcessingSystem {
     }
 
     public func update() {
-        entities.forEach(process)
+        entities.forEach(process(entity:))
     }
     
     open func process(entity: Entity) { }
