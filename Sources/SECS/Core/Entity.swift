@@ -1,6 +1,3 @@
-import AppKit
-import XCTest
-
 public class Entity {
     
     fileprivate(set) var components: [String: Component] = [:]
@@ -8,7 +5,7 @@ public class Entity {
 
     public init(components: Component...) {
         for component in components {
-            add(component, with: type(of: component).identifier)
+            add(component, with: component.identifier)
         }
     }
     
@@ -17,8 +14,10 @@ public class Entity {
     }
 
     @discardableResult
-    public func add<T: Component>(_ component: T) -> T {
-        add(component, with: T.identifier)
+    func add<T: Component>(_ component: T) -> T {
+        let identifier = T.identifier
+        components[identifier] = component
+        componentTypeIds.insert(identifier)
         return component
     }
     

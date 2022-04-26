@@ -1,5 +1,5 @@
 import XCTest
-import SECS
+@testable import SECS
 
 final class SECSFamilyTests: XCTestCase {
     private let hullComponent = HullComponent()
