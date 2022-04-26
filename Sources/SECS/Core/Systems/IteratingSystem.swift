@@ -18,6 +18,12 @@ open class IteratingSystem : EntityProcessingSystem {
         }
     }
 
+    func remove(_ entity: Entity) {
+        if let index = entities.firstIndex(where: { $0 == entity }) {
+            entities.remove(at: index)
+        }
+    }
+
     public func update() {
         entities.forEach(process(entity:))
     }

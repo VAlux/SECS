@@ -1,6 +1,5 @@
 //
 //  SECSEntityTests.swift
-//  
 //
 //  Created by Alexander Voievodin on 25.04.2022.
 //

@@ -9,4 +9,6 @@ protocol EntityProcessingSystem: AnySystem {
     func process(entity: Entity)
 
     func offer(_ entity: Entity)
+
+    func remove(_ entity: Entity)
 }

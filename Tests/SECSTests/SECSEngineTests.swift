@@ -6,7 +6,7 @@
 //
 
 import XCTest
-import SECS
+@testable import SECS
 
 final class SECSEngineTests : XCTestCase {
 
@@ -44,6 +44,27 @@ final class SECSEngineTests : XCTestCase {
 
         XCTAssertTrue(shipSystem.processed)
         XCTAssertFalse(playerSystem.processed)
+    }
+
+    func testRemoveEntity() {
+        engine.register(entity: ship)
+        engine.register(system: shipSystem)
+
+        engine.remove(entity: ship)
+
+        engine.update()
+
+        XCTAssertFalse(shipSystem.processed)
+        XCTAssertEqual(engine.entities.count, 0)
+    }
+
+    func testRemoveSystem() {
+        engine.register(system: shipSystem)
+        engine.register(system: playerSystem)
+
+        engine.remove(system: shipSystem)
+
+        XCTAssertEqual(engine.systems.count, 1)
     }
 }
 

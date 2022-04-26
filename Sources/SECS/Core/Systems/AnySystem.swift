@@ -5,6 +5,6 @@
 //  Created by Alexander Voievodin on 19.04.2022.
 //
 
-public protocol AnySystem {
+public protocol AnySystem: AnyIdentifiable {
     func update()
 }

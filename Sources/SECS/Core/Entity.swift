@@ -2,6 +2,7 @@ import AppKit
 import XCTest
 
 public class Entity {
+    
     fileprivate(set) var components: [String: Component] = [:]
     fileprivate(set) var componentTypeIds: Set<String> = []
 
@@ -40,5 +41,15 @@ public class Entity {
 extension Entity: CustomStringConvertible {
     public var description: String {
         components.description
+    }
+}
+
+extension Entity: Hashable, Equatable {
+    public func hash(into hasher: inout Hasher) {
+        componentTypeIds.forEach { hasher.combine($0.hashValue) }
+    }
+
+    public static func == (lhs: Entity, rhs: Entity) -> Bool {
+        lhs.hashValue == rhs.hashValue
     }
 }
