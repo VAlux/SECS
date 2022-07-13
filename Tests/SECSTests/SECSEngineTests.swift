@@ -11,10 +11,10 @@ import XCTest
 final class SECSEngineTests : XCTestCase {
 
     private let shipSystem =
-        TestIteratingSystem(family: .init(matchers: .allOf(components: [HullComponent.self, EngineComponent.self])))
+        TestShipIteratingSystem(family: .init(matchers: .allOf(components: [HullComponent.self, EngineComponent.self])))
 
     private let playerSystem =
-        TestIteratingSystem(family: .init(matchers: .allOf(components: [PlayerComponent.self])))
+        TestPlayerIteratingSystem(family: .init(matchers: .allOf(components: [PlayerComponent.self])))
 
     private let ship = Entity(components: EngineComponent(), HullComponent())
 
@@ -69,7 +69,15 @@ final class SECSEngineTests : XCTestCase {
 }
 
 private extension SECSEngineTests {
-    class TestIteratingSystem: IteratingSystem {
+    class TestShipIteratingSystem: IteratingSystem {
+        var processed = false
+
+        override func process(entity: Entity) {
+            self.processed = true
+        }
+    }
+
+    class TestPlayerIteratingSystem: IteratingSystem {
         var processed = false
 
         override func process(entity: Entity) {
