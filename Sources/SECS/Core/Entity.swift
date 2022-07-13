@@ -1,4 +1,4 @@
-public class Entity {
+open class Entity {
     
     fileprivate(set) var components: [String: Component] = [:]
     fileprivate(set) var componentTypeIds: Set<String> = []
