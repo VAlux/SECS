@@ -4,6 +4,8 @@
 //  Created by Alexander Voievodin on 19.04.2022.
 //
 
+import CoreGraphics
+
 open class IteratingSystem : EntityProcessingSystem {
     var family: Family
     var entities: [Entity] = []
@@ -24,9 +26,9 @@ open class IteratingSystem : EntityProcessingSystem {
         }
     }
 
-    public func update() {
-        entities.forEach(process(entity:))
+    public func update(deltaTime: CGFloat) {
+        entities.forEach { entity in process(entity: entity, deltaTime: deltaTime) }
     }
     
-    open func process(entity: Entity) { }
+    open func process(entity: Entity, deltaTime: CGFloat) { }
 }

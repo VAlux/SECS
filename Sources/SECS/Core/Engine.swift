@@ -7,6 +7,7 @@
 
 import Dispatch
 import Combine
+import CoreGraphics
 
 public class Engine {
 
@@ -46,9 +47,9 @@ public class Engine {
         }
     }
 
-    public func update() {
+    public func update(deltaTime: CGFloat) {
         processingQueue.sync {
-            systems.values.forEach { $0.update() }
+            systems.values.forEach { $0.update(deltaTime: deltaTime) }
         }
     }
 }
